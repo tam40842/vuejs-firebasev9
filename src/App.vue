@@ -1,24 +1,34 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
+    <div class="bg-blue">1123123</div>
+    <i class="t2ico t2ico-wallet"></i>
   </header>
-
-  <RouterView />
 </template>
+
+<script>
+import { db } from './configs/firebase.js'
+import { collection, getDocs } from 'firebase/firestore/lite'
+import { ref } from 'vue'
+
+export default {
+  components: {},
+  setup() {
+    const check = ref(null)
+    async function getCities(datatabse) {
+      const citiesCol = collection(datatabse, 'transactions')
+      const citySnapshot = await getDocs(citiesCol)
+      const cityList = citySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id
+      }))
+      check.value = cityList
+      return cityList
+    }
+    getCities(db)
+    return { check }
+  }
+}
+</script>
 
 <style scoped>
 header {
