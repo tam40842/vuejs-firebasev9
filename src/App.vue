@@ -1,31 +1,33 @@
 <template>
-  <header>
-    <div class="bg-blue">1123123</div>
-    <i class="t2ico t2ico-wallet"></i>
-  </header>
+  <component :is="layout">
+    <router-view />
+  </component>
 </template>
 
 <script>
 import { db } from './configs/firebase.js'
 import { collection, getDocs } from 'firebase/firestore/lite'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import { useRoute } from 'vue-router'
+import { PUBLIC_LAYOUT } from '@/constants'
 
 export default {
   components: {},
   setup() {
-    const check = ref(null)
-    async function getCities(datatabse) {
-      const citiesCol = collection(datatabse, 'transactions')
-      const citySnapshot = await getDocs(citiesCol)
-      const cityList = citySnapshot.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id
-      }))
-      check.value = cityList
-      return cityList
-    }
-    getCities(db)
-    return { check }
+    const route = useRoute()
+    // const check = ref(null)
+    // async function getCities(datatabse) {
+    //   const citiesCol = collection(datatabse, 'transactions')
+    //   const citySnapshot = await getDocs(citiesCol)
+    //   const cityList = citySnapshot.docs.map((doc) => ({
+    //     ...doc.data(),
+    //     id: doc.id
+    //   }))
+    //   check.value = cityList
+    //   return cityList
+    // }
+    // getCities(db)
+    return { layout: computed(() => (route.meta.layout || PUBLIC_LAYOUT) + '-layout') }
   }
 }
 </script>
