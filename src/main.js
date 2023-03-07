@@ -1,5 +1,7 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import { getAuth, onAuthStateChanged } from "@/configs/firebase";
+
 
 import App from './App.vue'
 import router from './router'
@@ -10,11 +12,19 @@ import './assets/style/global.css'
 
 import { registerGlobalComponents } from './utils/import'
 
-const app = createApp(App)
+let app;
 
-registerGlobalComponents(app)
+onAuthStateChanged(getAuth(), () => {
+    if (!app) {
+        app = createApp(App)
 
-app.use(createPinia())
-app.use(router)
+        registerGlobalComponents(app)
 
-app.mount('#app')
+        app.use(createPinia())
+        app.use(router)
+
+        app.mount('#app')
+
+    }
+})
+

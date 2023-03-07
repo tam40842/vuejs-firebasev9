@@ -1,18 +1,25 @@
 <template>
+  <NavigationHeader />
   <slot />
+  <NavigationBottom v-if="meta.isShowFooter" />
 </template>
 
 <script>
-import { reactive, toRefs } from 'vue'
+import NavigationBottom from '../components/NavigationBottom.vue';
+import NavigationHeader from '../components/NavigationHeader.vue';
+import { useRoute } from "vue-router";
+import { computed } from "vue";
 
 export default {
+  components: {
+    NavigationBottom,
+    NavigationHeader
+  },
   setup() {
-    const state = reactive({
-      count: 0
-    })
+    const router = useRoute()
 
     return {
-      ...toRefs(state)
+      meta: computed(() => router.meta)
     }
   }
 }

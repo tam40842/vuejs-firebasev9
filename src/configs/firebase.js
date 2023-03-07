@@ -1,7 +1,8 @@
 import { initializeApp } from 'firebase/app'
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
-import { getFirestore } from 'firebase/firestore/lite'
-import { serverTimestamp } from "firebase/firestore"
+import { getAuth, createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword, onAuthStateChanged, signOut } from 'firebase/auth'
+import { serverTimestamp, getFirestore, setDoc, doc, collection, addDoc } from 'firebase/firestore'
+import { getStorage, ref, uploadBytes } from "firebase/storage";
+let refStorage = ref
 // Follow this pattern to import other Firebase services
 // import { } from 'firebase/<service>';
 
@@ -18,5 +19,6 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig)
 const db = getFirestore(app)
+const storage = getStorage(app);
 
-export { db, getAuth, serverTimestamp, createUserWithEmailAndPassword }
+export { db, getAuth, serverTimestamp, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, onAuthStateChanged, signOut, setDoc, doc, collection, addDoc, storage, refStorage, uploadBytes }
